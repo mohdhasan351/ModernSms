@@ -168,7 +168,7 @@ Project Link: [https://github.com/mohdhasan351/ModernSms](https://github.com/moh
 * [Choose an Open Source License](https://choosealicense.com)
 * [folkstalk.com](https://www.folkstalk.com/tech/how-to-check-if-the-date-belongs-to-current-week-or-not-code-examples/)
 * [Img Shields](https://shields.io)
-* [GitHub Pages](https://github.com/Karumi/Dexter/)
+* [Karumi](https://github.com/Karumi/Dexter/)
 * [Stack OverFlow](https://stackoverflow.com/questions/57175226/how-to-disable-night-mode-in-my-application-even-if-night-mode-is-enable-in-andr)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>

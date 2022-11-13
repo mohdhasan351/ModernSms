@@ -35,7 +35,7 @@
   <h1 align="center"> <b>Modern Sms</b></h1>
 
   <p align="center">
-    Simple Sms app with clean UI and Search feature!
+    Modern Sms is a simple sms app with clean UI and Search feature!
     <br />
     <br />
     <br />
@@ -64,7 +64,7 @@
 [![Product Name Screen Shot][ViewUITwo]](https://example.com)
 [![Product Name Screen Shot][ViewUI]](https://example.com)
 
-Modern Sms app is native android app build using java and android studio i have used MVVM architechture in this app and uitlizes the Telephony class for receiving sms and SmsManager for sending sms. I make sure that my app is not using any depricate code but in case you found some then please inform me.
+Modern Sms app is native android app build using java and android studio i have used MVVM architechture in this app and uitlizes the Telephony class for receiving sms and SmsManager for sending sms and broadcast receiver for getting notifications. I make sure that my app is not using any depricate code but in case you found some then please inform me.
 
 Main function of this app is to sent and receive sms and search for particular sms. I hope you will contribute and make this repository next level.
 

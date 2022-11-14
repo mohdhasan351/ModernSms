@@ -94,7 +94,7 @@ Min API Level 21 is required (Android Lolipop)
 1. Download Latest release https://github.com/mohdhasan351/ModernSms/releases
 2. Clone the repo
    ```sh
-   git clone https://github.com/your_username_/Project-Name.git
+   git clone https://github.com/mohdhasan351/ModernSms.git
    ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>

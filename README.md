@@ -106,8 +106,8 @@ Min API Level 21 is required (Android Lolipop)
 <!-- ROADMAP -->
 ## Roadmap
 
-- [x] Add OTP detection in notification panel
-- [x] Add Cloud Backup and Restore
+- [ ] Add OTP detection in notification panel
+- [ ] Add Cloud Backup and Restore
 - [ ] Add Online Sms Feature like Google Message
 
 

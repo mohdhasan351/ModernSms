@@ -9,13 +9,10 @@ import android.os.Handler;
 import android.provider.ContactsContract;
 import android.provider.Telephony;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.modernsms.fragments.SentSmsFragment;
-import com.example.modernsms.fragments.SmsListFragment;
 import com.example.modernsms.models.ContactsModel;
 import com.example.modernsms.models.SmsModel;
 
@@ -36,6 +33,12 @@ public class SmsData {
     boolean isAddressAvail;
     String address;
     private static SmsData instance;
+    SimpleDateFormat sdfd,sdft,sdfday;
+    Calendar c;
+    SimpleDateFormat sdf;
+    Date monday;
+    Date nextMonday;
+    String currentdate;
 
     public static SmsData getInstance(Context context) {
         if (instance == null)
@@ -54,6 +57,13 @@ public class SmsData {
         this.mutableContactsData = new MutableLiveData<>();
         contentResolver = ctx.getContentResolver();
         contentResolver.registerContentObserver(Telephony.Sms.CONTENT_URI,true,new MyObserver(new Handler()));
+
+        sdfd=new SimpleDateFormat("dd-MM-yyy");
+        sdfday=new SimpleDateFormat("EEEE");
+        sdft = new SimpleDateFormat("hh:mm: aa");
+
+        currentdate = new SimpleDateFormat("dd-MM-yyyy").format(Calendar.getInstance().getTime());
+        initialize();
     }
 
     public MutableLiveData<List<SmsModel>> getAllSms() {
@@ -66,12 +76,20 @@ public class SmsData {
                 , null, null,
                 Telephony.Sms.DEFAULT_SORT_ORDER);
         for (c.moveToFirst(); c.getPosition() < c.getCount(); c.moveToNext()) {
-            String date = new SimpleDateFormat("dd-MM-yyy").format(new Date(c.getLong(2)));
-            String time = new SimpleDateFormat("hh:mm aa").format(new Date(c.getLong(2)));
-            String day = new SimpleDateFormat("EEEE").format(new Date(c.getLong(2)));
+            String date = sdfd.format(new Date(c.getLong(2)));
+            String time = sdft.format(new Date(c.getLong(2)));
+            String day = sdfday.format(new Date(c.getLong(2)));
             //Log.d("sms",c.getString(0)+" date "+date+" time "+time+" day "+day);
 
-            list.add(new SmsModel(c.getString(0).trim(),c.getString(1).trim(),date,time,day,c.getInt(3)));
+            //(String address, String body, String date, String time, String day, String displayDate, int type)
+
+            if(date.equals(currentdate))
+                list.add(new SmsModel(c.getString(0).trim(),c.getString(1).trim(),date,time,day,time,c.getInt(3)));
+            else if(inBetweenThisWeek(date))
+                list.add(new SmsModel(c.getString(0).trim(),c.getString(1).trim(),date,time,day,day,c.getInt(3)));
+            else
+                list.add(new SmsModel(c.getString(0).trim(),c.getString(1).trim(),date,time,day,date,c.getInt(3)));
+            //list.add(new SmsModel(c.getString(0).trim(),c.getString(1).trim(),date,time,day,c.getInt(3)));
         }
         mutableLiveData.setValue(list);
         c.close();
@@ -86,11 +104,19 @@ public class SmsData {
                 new String[]{Telephony.Sms.ADDRESS, Telephony.Sms.BODY, Telephony.Sms.DATE, Telephony.Sms.TYPE}, "Address='" + address + "'", null,
                 "date");
         for (c.moveToFirst(); c.getPosition() < c.getCount(); c.moveToNext()) {
-            String date = new SimpleDateFormat("dd-MM-yyy").format(new Date(c.getLong(2)));
-            String time = new SimpleDateFormat("hh:mm: aa").format(new Date(c.getLong(2)));
-            String day = new SimpleDateFormat("EEEE").format(new Date(c.getLong(2)));
-            list.add(new SmsModel(c.getString(0).trim(),c.getString(1).trim(),date,time,day,c.getInt(3)));
-            Log.d("type", "" + c.getInt(3));
+            String date = sdfd.format(new Date(c.getLong(2)));
+            String time = sdft.format(new Date(c.getLong(2)));
+            String day = sdfday.format(new Date(c.getLong(2)));
+
+            //(String address, String body, String date, String time, String day, String displayDate, int type)
+
+            if(date.equals(currentdate))
+                list.add(new SmsModel(c.getString(0).trim(),c.getString(1).trim(),date,time,day,time,c.getInt(3)));
+            else if(inBetweenThisWeek(date))
+                list.add(new SmsModel(c.getString(0).trim(),c.getString(1).trim(),date,time,day,day,c.getInt(3)));
+            else
+                list.add(new SmsModel(c.getString(0).trim(),c.getString(1).trim(),date,time,day,date,c.getInt(3)));
+            //Log.d("type", "" + c.getInt(3));
         }
         c.close();
         mutableLiveDataByAddress.setValue(list);
@@ -108,10 +134,36 @@ public class SmsData {
             number=number.replaceAll("[^+\\d]","");
             list.add(new ContactsModel(name, number));
         }
-
+        c.close();
         mutableContactsData.setValue(list);
         return mutableContactsData;
     }
+
+    //helper fun for checking date lies in this week then return true
+    public  boolean inBetweenThisWeek(String yourDate) {
+        Date date2 = null;
+        try {
+            date2 = sdf.parse(yourDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return  ((date2.compareTo(monday)>=0) && date2.before(nextMonday));
+    }
+    void initialize(){
+        c = Calendar.getInstance();
+        c.setFirstDayOfWeek(Calendar.MONDAY);
+        c.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+        c.set(Calendar.HOUR_OF_DAY, 0);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
+        c.set(Calendar.MILLISECOND, 0);
+        monday = c.getTime();
+        sdf = new SimpleDateFormat("dd-MM-yyyy");
+        nextMonday= new Date(monday.getTime()+7*24*60*60*1000);
+    }
+
+
+
     private class MyObserver extends ContentObserver{
         public MyObserver(Handler handler) {
             super(handler);

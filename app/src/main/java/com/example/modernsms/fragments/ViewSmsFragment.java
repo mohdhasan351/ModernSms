@@ -51,7 +51,6 @@ private SmsViewModel viewModel;
         // Inflate the layout for this fragment
         binding = FragmentViewSmsBinding.inflate(inflater,container,false);
 
-        adapter.setCtx(getContext());
         binding.recyclerviewid.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.recyclerviewid.setAdapter(adapter);
         viewModel.getSmsByAddress(address).observe(getViewLifecycleOwner(), new Observer<List<SmsModel>>() {

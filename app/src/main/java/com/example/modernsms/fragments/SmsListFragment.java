@@ -1,9 +1,5 @@
 package com.example.modernsms.fragments;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -15,7 +11,6 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -64,7 +59,6 @@ public class SmsListFragment extends Fragment implements View.OnClickListener, O
         handler = new Handler();
 
 
-        listSmsAdapter.setContext(getContext());
         listSmsAdapter.setOnRecyclerItemClick(this);
 
         binding.recyclerid.setAdapter(listSmsAdapter);

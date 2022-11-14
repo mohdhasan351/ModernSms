@@ -110,7 +110,6 @@ public class SentSmsFragment extends Fragment implements View.OnClickListener {
         binding.linearlayid.setOnClickListener(this);
         binding.recyclerviewid.setAdapter(adapter);
         binding.recyclerviewid.setLayoutManager(new LinearLayoutManager(requireContext()));
-        adapter.setCtx(getContext());
         viewModel.getSmsByAddress(list.get(0).getNumber()).observe(getViewLifecycleOwner(), new Observer<List<SmsModel>>() {
             @Override
             public void onChanged(List<SmsModel> smsModels) {

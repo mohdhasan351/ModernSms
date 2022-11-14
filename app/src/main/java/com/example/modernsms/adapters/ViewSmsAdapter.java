@@ -23,22 +23,11 @@ import java.util.Set;
 
 public class ViewSmsAdapter extends RecyclerView.Adapter {
     private List<SmsModel> list;
-    private Context ctx;
-    Calendar c;
-    SimpleDateFormat sdf;
-    Date monday;
-    Date nextMonday;
-    String currentdate;
     Set<String> uniqueday;
-
+    String currentdate;
     public ViewSmsAdapter() {
-        currentdate = new SimpleDateFormat("dd-MM-yyyy").format(Calendar.getInstance().getTime());
         uniqueday =new HashSet<>();
-        initialize();
-    }
-
-    public void setCtx(Context ctx) {
-        this.ctx = ctx;
+        currentdate = new SimpleDateFormat("dd-MM-yyyy").format(Calendar.getInstance().getTime());
     }
 
     public void setList(List<SmsModel> list) {
@@ -66,7 +55,8 @@ public class ViewSmsAdapter extends RecyclerView.Adapter {
 
             if(currentdate.equals(list.get(position).getDate())){
                 ((ReceiverViewSenderSmsHolder)holder).date.setVisibility(View.GONE);
-            }else if(inBetweenThisWeek(list.get(position).getDate())) {
+            }
+            else if(list.get(position).getDisplayDate().equals(list.get(position).getDay())) {
                 if(!uniqueday.contains(list.get(position).getDay())) {
                     ((ReceiverViewSenderSmsHolder)holder).date.setVisibility(View.VISIBLE);
                     ((ReceiverViewSenderSmsHolder) holder).date.setText(list.get(position).getDay());
@@ -85,7 +75,7 @@ public class ViewSmsAdapter extends RecyclerView.Adapter {
 
             if(currentdate.equals(list.get(position).getDate())){
                 ((SenderViewSenderSmsHolder)holder).date.setVisibility(View.GONE);
-            }else if(inBetweenThisWeek(list.get(position).getDate())) {
+            }else if(list.get(position).getDisplayDate().equals(list.get(position).getDay())) {
                 if(!uniqueday.contains(list.get(position).getDay())) {
                     ((SenderViewSenderSmsHolder) holder).date.setVisibility(View.VISIBLE);
                     ((SenderViewSenderSmsHolder) holder).date.setText(list.get(position).getDay());
@@ -132,31 +122,8 @@ public class ViewSmsAdapter extends RecyclerView.Adapter {
             textView = itemView.findViewById(R.id.textView);
             date = itemView.findViewById(R.id.datelong);
             time = itemView.findViewById(R.id.timeday);
-            //textView.setMovementMethod(LinkMovementMethod.getInstance());
         }
     }
-    //helper fun for checking date lies in this week then return true
-    public  boolean inBetweenThisWeek(String yourDate) {
 
-        Date date2 = null;
-        try {
-            date2 = sdf.parse(yourDate);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        boolean isThisWeek = (date2.compareTo(monday)>=0) && date2.before(nextMonday);
-        return isThisWeek;
-    }
-    void initialize(){
-        c = Calendar.getInstance();
-        c.setFirstDayOfWeek(Calendar.MONDAY);
-        c.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-        c.set(Calendar.HOUR_OF_DAY, 0);
-        c.set(Calendar.MINUTE, 0);
-        c.set(Calendar.SECOND, 0);
-        c.set(Calendar.MILLISECOND, 0);
-        monday = c.getTime();
-        sdf = new SimpleDateFormat("dd-MM-yyyy");
-        nextMonday= new Date(monday.getTime()+7*24*60*60*1000);
-    }
+
 }

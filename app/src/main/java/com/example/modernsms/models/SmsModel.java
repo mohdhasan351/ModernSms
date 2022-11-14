@@ -6,6 +6,7 @@ public class SmsModel {
     private String Date;
     private String time;
     private String day;
+    private String displayDate;
     private int type;
 
     public SmsModel(String address, String body, String date, String time) {
@@ -37,6 +38,23 @@ public class SmsModel {
         this.type = type;
     }
 
+    public SmsModel(String address, String body, String date, String time, String day, String displayDate, int type) {
+        this.address = address;
+        this.body = body;
+        Date = date;
+        this.time = time;
+        this.day = day;
+        this.displayDate = displayDate;
+        this.type = type;
+    }
+
+    public String getDisplayDate() {
+        return displayDate;
+    }
+
+    public void setDisplayDate(String displayDate) {
+        this.displayDate = displayDate;
+    }
 
     public String getDay() {
         return day;
